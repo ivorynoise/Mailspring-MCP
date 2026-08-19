@@ -195,6 +195,11 @@ declare module 'mailspring-exports'
 		prepare(): Promise<MailspringMessage | void>;
 	}
 
+	const Actions:
+	{
+		destroyDraft(opts: { accountId: string; headerMessageId: string; id?: string }): void;
+	};
+
 	const DraftStore:
 	{
 		sessionForClientId(headerMessageId: string): Promise<DraftEditingSession>;
