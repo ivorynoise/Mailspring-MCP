@@ -11,6 +11,7 @@ import { registerListThreadsTool } from './registerListThreadsTool';
 import { registerReadEmailTool } from './registerReadEmailTool';
 import { registerReadThreadTool } from './registerReadThreadTool';
 import { registerSearchEmailsTool } from './registerSearchEmailsTool';
+import { registerUpdateDraftTool } from './registerUpdateDraftTool';
 
 export function registerTools(server: ToolServer): void
 {
@@ -25,4 +26,5 @@ export function registerTools(server: ToolServer): void
 	registerListDraftsTool(server);
 	registerEmailStatsTool(server);
 	registerBatchReadEmailsTool(server);
+	registerUpdateDraftTool(server);
 }

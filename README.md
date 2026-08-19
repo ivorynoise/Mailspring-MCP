@@ -1,6 +1,8 @@
 # Mailspring MCP Server Plugin
 
-A Mailspring plugin that runs an MCP (Model Context Protocol) server, giving AI agents read-only access to your email data — threads, messages, contacts, folders, and labels.
+A Mailspring plugin that runs an MCP (Model Context Protocol) server, giving AI agents access to your email data — threads, messages, contacts, folders, and labels.
+
+Reads are the bulk of it and are strictly read-only. The one exception is `update_draft`, which edits an existing draft in place. Nothing in this server sends mail, creates a draft, or modifies received messages.
 
 The plugin uses Mailspring's own `DatabaseStore` API, making setup easy and seamless.
 
@@ -69,3 +71,4 @@ Use this if you are actively working on the plugin code.
 | `get_recent_emails` | Get recent emails with date range filtering and pagination |
 | `list_drafts` | List draft emails with pagination |
 | `email_stats` | Get mailbox statistics |
+| `update_draft` | **Write.** Update an existing draft in place — subject, body, or recipients. Keeps the draft's ID, attachments and thread position. `bodyMode` controls whether a new body replaces everything, replaces only your text above a quoted reply, or is prepended/appended. Never sends. |
