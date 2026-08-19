@@ -76,3 +76,8 @@ export interface UpdateDraftParams
 	cc?: DraftRecipientInput[];
 	bcc?: DraftRecipientInput[];
 }
+
+export interface DeleteDraftParams
+{
+	id: string;
+}

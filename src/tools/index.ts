@@ -1,6 +1,7 @@
 import { ToolServer } from '../types';
 
 import { registerBatchReadEmailsTool } from './registerBatchReadEmailsTool';
+import { registerDeleteDraftTool } from './registerDeleteDraftTool';
 import { registerEmailStatsTool } from './registerEmailStatsTool';
 import { registerGetRecentEmailsTool } from './registerGetRecentEmailsTool';
 import { registerListContactsTool } from './registerListContactsTool';
@@ -27,4 +28,5 @@ export function registerTools(server: ToolServer): void
 	registerEmailStatsTool(server);
 	registerBatchReadEmailsTool(server);
 	registerUpdateDraftTool(server);
+	registerDeleteDraftTool(server);
 }
