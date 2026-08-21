@@ -1,6 +1,7 @@
 import { ToolServer } from '../types';
 
 import { registerBatchReadEmailsTool } from './registerBatchReadEmailsTool';
+import { registerDeleteDraftTool } from './registerDeleteDraftTool';
 import { registerEmailStatsTool } from './registerEmailStatsTool';
 import { registerGetRecentEmailsTool } from './registerGetRecentEmailsTool';
 import { registerListContactsTool } from './registerListContactsTool';
@@ -11,6 +12,7 @@ import { registerListThreadsTool } from './registerListThreadsTool';
 import { registerReadEmailTool } from './registerReadEmailTool';
 import { registerReadThreadTool } from './registerReadThreadTool';
 import { registerSearchEmailsTool } from './registerSearchEmailsTool';
+import { registerUpdateDraftTool } from './registerUpdateDraftTool';
 
 export function registerTools(server: ToolServer): void
 {
@@ -25,4 +27,6 @@ export function registerTools(server: ToolServer): void
 	registerListDraftsTool(server);
 	registerEmailStatsTool(server);
 	registerBatchReadEmailsTool(server);
+	registerUpdateDraftTool(server);
+	registerDeleteDraftTool(server);
 }

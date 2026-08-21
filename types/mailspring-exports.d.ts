@@ -179,6 +179,40 @@ declare module 'mailspring-exports'
 		run<T>(query: ModelQuery<T>): Promise<T[]>;
 	};
 
+	interface DraftChangeSet
+	{
+		add(changes: Record<string, unknown>, options?: { skipSaving?: boolean }): void;
+		commit(): Promise<void>;
+		isDirty(): boolean;
+		dirtyFields(): string[];
+	}
+
+	interface DraftEditingSession
+	{
+		headerMessageId: string;
+		changes: DraftChangeSet;
+		draft(): MailspringMessage | null;
+		prepare(): Promise<MailspringMessage | void>;
+	}
+
+	const Actions:
+	{
+		destroyDraft(opts: { accountId: string; headerMessageId: string; id?: string }): void;
+	};
+
+	const DraftStore:
+	{
+		sessionForClientId(headerMessageId: string): Promise<DraftEditingSession>;
+		isSendingDraft(headerMessageId: string): boolean;
+	};
+
+	const QuotedHTMLTransformer:
+	{
+		hasQuotedHTML(html: string): boolean;
+		removeQuotedHTML(html: string, options?: { keepIfWholeBodyIsQuote?: boolean }): string;
+		appendQuotedHTML(htmlWithoutQuotes: string, originalHTML: string): string;
+	};
+
 	const ComponentRegistry:
 	{
 		register(component: any, options: { role: string }): void;
