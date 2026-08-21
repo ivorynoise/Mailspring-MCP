@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A Mailspring plugin that runs an MCP (Model Context Protocol) server inside the Mailspring email client, exposing **read-only** access to email data (threads, messages, contacts, folders, labels) over Streamable HTTP at `http://127.0.0.1:2525/mcp`. It queries Mailspring's own `DatabaseStore` directly — there is no separate backend.
+A Mailspring plugin that runs an MCP (Model Context Protocol) server inside the Mailspring email client, exposing access to email data (threads, messages, contacts, folders, labels) over Streamable HTTP at `http://127.0.0.1:2525/mcp`. Access is **read-only for mail**, with two deliberate write exceptions that operate on drafts only: `update_draft` and `delete_draft`. It queries Mailspring's own `DatabaseStore` directly — there is no separate backend.
 
 The original Mailspring source is cloned at [`../Mailspring`](../Mailspring) (absolute path: `/Users/deepakp/Documents/obisidian-vault/Mailspring`) for reference. Use it to verify `mailspring-exports` APIs — e.g. `app/src/flux/stores/database-store.ts`, `app/src/flux/models/`, and `PLUGIN_SYSTEM_ARCHITECTURE.md`. Note: from a git worktree of this repo, `../Mailspring` does not resolve — use the absolute path.
 
@@ -35,7 +35,7 @@ Mailspring does **not** hot-reload plugins — after any rebuild, restart Mailsp
 - Filters that `DatabaseStore` can't express (`from`/`to` participant match, `hasAttachment`) are applied in JS **after** `limit`/`offset` run in SQL, so a page can return fewer results than `limit` even when more matches exist. Known trade-off, not a bug — but keep it in mind when adding filters.
 - `folder`/`label` filters do a case-insensitive substring match against category paths and silently skip the matcher when nothing matches (returning unfiltered results) — see `buildThreadMatchers()`.
 - The MCP server has no authentication **by design** — it binds only to `127.0.0.1`, so access is limited to local processes. Don't add auth layers, and don't change the bind address to a non-loopback interface.
-- The plugin is read-only by design. Do not add tools that send, modify, or delete mail.
+- The plugin is read-only for mail by design, with drafts as the sole write surface: `update_draft` revises an existing draft in place and `delete_draft` removes one draft by ID. Do not add tools that send mail, create drafts, or modify or delete received messages — and keep any draft tool strictly single-item (no bulk or filter-driven writes).
 - Message/thread bodies must go through `sanitizeHtml()` (for `bodyHtml`) or `stripHtml()` (for plain text) before being returned to the MCP client.
 - `styles/main.less` is an intentionally empty placeholder required by the plugin layout.
 
