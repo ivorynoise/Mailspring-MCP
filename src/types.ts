@@ -57,3 +57,27 @@ export interface BatchReadEmailsParams
 }
 
 export type ToolServer = any;
+
+export interface DraftRecipientInput
+{
+	name?: string;
+	email: string;
+}
+
+export type UpdateDraftBodyMode = 'replace' | 'replaceAboveQuote' | 'prepend' | 'append';
+
+export interface UpdateDraftParams
+{
+	id: string;
+	subject?: string;
+	body?: string;
+	bodyMode: UpdateDraftBodyMode;
+	to?: DraftRecipientInput[];
+	cc?: DraftRecipientInput[];
+	bcc?: DraftRecipientInput[];
+}
+
+export interface DeleteDraftParams
+{
+	id: string;
+}
