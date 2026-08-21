@@ -81,3 +81,35 @@ export interface DeleteDraftParams
 {
 	id: string;
 }
+
+export interface MailFilterConditionInput
+{
+	field: string;
+	op?: string;
+	value: string;
+}
+
+export interface MailFilterActionInput
+{
+	type: string;
+	value?: string;
+}
+
+export interface ListFiltersParams
+{
+	account?: string;
+}
+
+export interface AddFiltersParams
+{
+	account: string;
+	name?: string;
+	match?: 'all' | 'any';
+	conditions: MailFilterConditionInput[];
+	actions: MailFilterActionInput[];
+}
+
+export interface DeleteFilterParams
+{
+	id: string;
+}

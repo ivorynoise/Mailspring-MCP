@@ -141,12 +141,80 @@ declare module 'mailspring-exports'
 		name: string;
 		emailAddress: string;
 		provider: string;
+		usesLabels(): boolean;
 	}
 
 	const AccountStore:
 	{
 		accounts(): MailspringAccount[];
 		accountForId(id: string): MailspringAccount | null;
+		accountForEmail(email: string): MailspringAccount | null;
+	};
+
+	// A Gmail label or an IMAP folder. CategoryStore returns both through the
+	// same shape; which one an account uses is decided by `usesLabels()`.
+	interface MailspringCategory
+	{
+		id: string;
+		path: string;
+		role: string | null;
+		displayName: string;
+		accountId: string;
+		isLockedCategory(): boolean;
+	}
+
+	const CategoryStore:
+	{
+		byId(accountOrId: string, categoryId: string): MailspringCategory | null;
+		categories(accountOrId?: string | null): MailspringCategory[];
+	};
+
+	interface MailRuleCondition
+	{
+		templateKey: string;
+		comparatorKey?: string;
+		value?: string;
+	}
+
+	interface MailRuleAction
+	{
+		templateKey: string;
+		value?: string;
+	}
+
+	interface MailRuleRecord
+	{
+		id: string;
+		accountId: string;
+		name: string;
+		disabled?: boolean;
+		disabledReason?: string;
+		conditionMode: 'any' | 'all';
+		conditions: MailRuleCondition[];
+		actions: MailRuleAction[];
+	}
+
+	const MailRulesStore:
+	{
+		rules(): MailRuleRecord[];
+		rulesForAccountId(accountId: string): MailRuleRecord[];
+		disabledRules(accountId?: string): MailRuleRecord[];
+	};
+
+	interface MailRuleTemplate
+	{
+		key: string;
+		name: string;
+		type: 'String' | 'Enum' | 'None' | 'InputString';
+		comparators: Record<string, { name: string }>;
+		values?: { name: string; value: string }[];
+	}
+
+	const MailRulesTemplates:
+	{
+		ConditionTemplates: MailRuleTemplate[];
+		ActionTemplates: MailRuleTemplate[];
+		ConditionMode: { Any: 'any'; All: 'all' };
 	};
 
 	interface MailspringContactRecord
@@ -198,6 +266,10 @@ declare module 'mailspring-exports'
 	const Actions:
 	{
 		destroyDraft(opts: { accountId: string; headerMessageId: string; id?: string }): void;
+		addMailRule(properties: Partial<MailRuleRecord> & { accountId: string }): void;
+		updateMailRule(id: string, properties: Partial<MailRuleRecord>): void;
+		deleteMailRule(id: string): void;
+		reorderMailRule(id: string, newIdx: number): void;
 	};
 
 	const DraftStore:
